@@ -1,16 +1,14 @@
-# Rocky
-
-Rocky writes all your cloudformation and riff-raff configuration for you.
-
-```ts
+import { Rocky } from './rocky'
 const rocky = new Rocky({
   name: "Rocky",
-  url: "https://github.com/guardian/Rocky"
+  url: "https://github.com/guardian/Rocky",
   parameters: {
-    "parameterName":{
+    "parameterName": {
       description: "This is where some data goes"
     }
-  }
+  },
+  bucket: "rocky-dist",
+  stacks: ['frontend']
 })
 
 const deployment = rocky.deployment({
@@ -24,4 +22,5 @@ const lambda = rocky.lambda({
   deployment
 })
 
-```
+rocky.cdk()
+
