@@ -11,6 +11,7 @@
     "@aws-cdk/aws-s3": "^1.17.1",
     "@aws-cdk/core": "^1.17.1",
     "@guardian/node-riffraff-artifact": "0.0.17",
+    "@types/node": "^12.12.12",
     "@types/yaml": "^1.2.0",
     "aws-cdk": "^1.17.1",
     "ts-node": "^8.5.2",

@@ -22,5 +22,4 @@ const lambda = rocky.lambda({
   deployment
 })
 
-rocky.cdk()
 

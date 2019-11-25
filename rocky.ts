@@ -44,6 +44,7 @@ export class Rocky {
   deployments: Deployment[] = [];
   lambdas: Lambda[] = [];
   bucket: string;
+  private hasRun: boolean = false
 
   constructor(props: ConstructorProps) {
     this.name = props.name;
@@ -54,6 +55,12 @@ export class Rocky {
     } = { stage: { description: "Stage." } };
     this.parameters = { ...defaultParams, ...props.parameters };
     this.bucket = props.bucket;
+    process.on('beforeExit', () => {
+      if (this.hasRun) {
+        return
+      }
+      this.run()
+    })
   }
 
   public deployment(deployment: Deployment) {
@@ -66,7 +73,7 @@ export class Rocky {
     return lambda;
   }
 
-  public cdk() {
+  private cdk() {
     const app = new cdk.App();
     const stack = new cdk.Stack(app, this.name, { tags: { Stack: this.name } });
     this.cdkResources(stack);
@@ -111,7 +118,7 @@ export class Rocky {
     return YAML.stringify(contents)
   }
 
-  public async riffraff() {
+  private async run() {
     const actions = this.deployments.map(deployment => ({
       action: deployment.name,
       path: deployment.path,
