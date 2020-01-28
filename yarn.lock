@@ -174,8 +174,10 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
-"@guardian/node-riffraff-artifact@file:../node-riffraff-artifact":
-  version "0.1.1"
+"@guardian/node-riffraff-artifact@^0.1.3":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@guardian/node-riffraff-artifact/-/node-riffraff-artifact-0.1.3.tgz#57a39ecdc8f68a06cce39c4e2f3c75fe1c3fd176"
+  integrity sha512-aS4aQuwogKJVTXfbe9YPbbklpLMLWzcOk1yD3Q4u3pLoWcnKjXSWKkxbCOxPOIrmp3WAJ8M2Ur6tX1Rk/9/y3w==
   dependencies:
     "@mojotech/json-type-validation" "^3.1.0"
     archiver "^3.1.1"

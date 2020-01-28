@@ -7,6 +7,8 @@ import { promisify } from 'util'
 import { Rocky } from './rocky'
 import { register } from 'ts-node'
 import { accessSync, constants as fsConstants } from 'fs'
+import { image } from './image'
+import { idText } from 'typescript'
 
 const synth = async (filePath: string): Promise<string> => {
   const appCommand = `node ${filePath.slice(-3) === (".ts") ? "-r ts-node/register" : ""} -e \\"require('${filePath}'), global._rocky.cdk()\\"`
@@ -41,6 +43,7 @@ yargs.command("run [file] [dryRun]", "synthesise cloudformation and upload to ri
   require(filePath)
   const rocky: Rocky = (global as any)._rocky
   rocky.upload(cfn, dryRun)
+  if (dryRun) console.log(`\u001B]1337;File=inline=1:${image}\u0007`)
 
 }).argv
 

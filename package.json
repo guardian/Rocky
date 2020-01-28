@@ -14,7 +14,7 @@
     "@aws-cdk/aws-lambda": "^1.22.0",
     "@aws-cdk/aws-s3": "^1.22.0",
     "@aws-cdk/core": "^1.22.0",
-    "@guardian/node-riffraff-artifact": "file:../node-riffraff-artifact",
+    "@guardian/node-riffraff-artifact": "^0.1.3",
     "@types/node": "^13.5.0",
     "@types/yaml": "^1.2.0",
     "aws-cdk": "^1.22.0",
