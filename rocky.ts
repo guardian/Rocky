@@ -2,12 +2,14 @@ import cdk = require("@aws-cdk/core");
 import lambda = require("@aws-cdk/aws-lambda");
 import { Code } from "@aws-cdk/aws-lambda";
 import { Duration, Tag } from "@aws-cdk/core";
-import s3 = require("@aws-cdk/aws-s3");
-import { deployWithConf } from "@guardian/node-riffraff-artifact/lib/index";
+import cdkS3 = require("@aws-cdk/aws-s3");
+import { S3 } from 'aws-sdk'
+import { mockS3 } from "@guardian/node-riffraff-artifact/lib/index";
 import YAML from 'yaml'
 import { generateManifest } from "@guardian/node-riffraff-artifact/lib/environment";
 import { uploadAction, upload } from "@guardian/node-riffraff-artifact/lib/upload";
 import { uploadManifest } from "@guardian/node-riffraff-artifact/lib/manifest";
+
 
 
 interface Parameter {
@@ -55,12 +57,8 @@ export class Rocky {
     } = { stage: { description: "Stage." } };
     this.parameters = { ...defaultParams, ...props.parameters };
     this.bucket = props.bucket;
-    process.on('beforeExit', () => {
-      if (this.hasRun) {
-        return
-      }
-      this.run()
-    })
+
+    (global as any)._rocky = this;
   }
 
   public deployment(deployment: Deployment) {
@@ -73,11 +71,10 @@ export class Rocky {
     return lambda;
   }
 
-  private cdk() {
+  public cdk() {
     const app = new cdk.App();
     const stack = new cdk.Stack(app, this.name, { tags: { Stack: this.name } });
     this.cdkResources(stack);
-    return YAML.stringify(app.synth().getStackByName(this.name).template, { schema: 'yaml-1.1' })
   }
 
   private riffraffYaml() {
@@ -118,7 +115,9 @@ export class Rocky {
     return YAML.stringify(contents)
   }
 
-  private async run() {
+  //Cloudformations is sent as a string for very bad reasons
+  async upload(cloudformation: string, dryRun: boolean) {
+    const s3 = dryRun ? mockS3() : new S3()
     const actions = this.deployments.map(deployment => ({
       action: deployment.name,
       path: deployment.path,
@@ -131,25 +130,26 @@ export class Rocky {
       actions
     }
     const yaml = this.riffraffYaml()
-    const cfn = this.cdk()
+
 
     const manifest = generateManifest(this.name, this.url)
+
     await Promise.all(
       actions.map(action => {
-        return uploadAction(manifest, action);
+        return uploadAction(s3, manifest, action);
       })
     );
-    await upload(
+    await upload(s3,
       "cloudformation.yaml",
-      cfn,
+      cloudformation,
       manifest,
     );
-    await upload(
+    await upload(s3,
       "riff-raff.yaml",
       yaml,
       manifest
     );
-    await uploadManifest(manifest);
+    await uploadManifest(s3, manifest);
 
   }
 
@@ -163,7 +163,7 @@ export class Rocky {
     const lambdaEnv = Object.fromEntries(
       Object.entries(params).map(([name, param]) => [name, param.valueAsString])
     );
-    const bucket = s3.Bucket.fromBucketName(scope, this.bucket, this.bucket);
+    const bucket = cdkS3.Bucket.fromBucketName(scope, this.bucket, this.bucket);
     this.lambdas.map(l => {
       const fn = new lambda.Function(scope, `${this.name}-${l.name}`, {
         functionName: `${this.name}-${l.name}-${params.stage.valueAsString}`,
