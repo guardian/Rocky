@@ -1,5 +1,5 @@
 {
-  "name": "rocky",
+  "name": "@guardian/rocky",
   "version": "0.0.1",
   "description": "friend of riff-raff",
   "main": "dist/rocky.js",
@@ -8,13 +8,14 @@
   "author": "Alex Ware <alex.ware@guardian.co.uk>",
   "license": "MIT",
   "scripts": {
-    "compile": "tsc"
+    "build": "tsc",
+    "prepublish": "yarn build"
   },
   "dependencies": {
     "@aws-cdk/aws-lambda": "^1.22.0",
     "@aws-cdk/aws-s3": "^1.22.0",
     "@aws-cdk/core": "^1.22.0",
-    "@guardian/node-riffraff-artifact": "^0.1.3",
+    "@guardian/node-riffraff-artifact": "^0.1.4",
     "@types/node": "^13.5.0",
     "@types/yaml": "^1.2.0",
     "aws-cdk": "^1.22.0",
