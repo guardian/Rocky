@@ -7,6 +7,9 @@
   "repository": "git@github.com:guardian/Rocky.git",
   "author": "Alex Ware <alex.ware@guardian.co.uk>",
   "license": "MIT",
+  "files": [
+    "dist/**"
+  ],
   "scripts": {
     "build": "tsc",
     "prepublish": "yarn build"
