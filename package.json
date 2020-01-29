@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "prepublish": "yarn build"
+    "prepublishOnly": "yarn build"
   },
   "dependencies": {
     "@aws-cdk/aws-lambda": "^1.22.0",
