@@ -101,9 +101,7 @@ export class Rocky {
       cloudformation: {
         type: 'cloud-formation', app: this.name, parameters: {
           prependStackToCloudFormationStackName: false,
-          cloudFormationStackName: this.name,
           templatePath: 'cloudformation.yaml',
-          cloudFormationStackByTags: 'false'
         }
       }
     }
@@ -177,7 +175,7 @@ export class Rocky {
         timeout: Duration.seconds(60),
         code: Code.bucket(
           bucket,
-          `${l.name}/${params.stage.valueAsString}/${l.deployment.name}/${l.deployment.name}.zip`
+          `${selectedStack}/${params.stage.valueAsString}/${l.deployment.name}/${l.deployment.name}.zip`
         ),
         handler: `${l.handler}`,
         environment: lambdaEnv
