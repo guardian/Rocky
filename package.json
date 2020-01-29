@@ -1,6 +1,6 @@
 {
   "name": "@guardian/rocky",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "friend of riff-raff",
   "main": "dist/rocky.js",
   "bin": "dist/runner.js",
