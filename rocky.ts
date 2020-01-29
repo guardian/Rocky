@@ -100,7 +100,7 @@ export class Rocky {
         })),
       cloudformation: {
         type: 'cloud-formation', app: this.name, parameters: {
-          prependStackToCloudFormationStackName: false,
+          cloudFormationStackName: this.name,
           templatePath: 'cloudformation.yaml',
         }
       }
@@ -139,7 +139,7 @@ export class Rocky {
       })
     );
     await upload(s3,
-      "cloudformation.yaml",
+      "cloudformation/cloudformation.yaml",
       cloudformation,
       manifest,
     );
