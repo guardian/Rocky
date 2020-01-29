@@ -22,12 +22,14 @@
     "@types/node": "^13.5.0",
     "@types/yaml": "^1.2.0",
     "aws-cdk": "^1.22.0",
+    "core-js": "^3.6.4",
     "ts-node": "^8.6.2",
     "typescript": "^3.7.5",
     "yaml": "^1.7.2",
     "yargs": "^15.1.0"
   },
   "devDependencies": {
+    "@types/core-js": "^2.5.2",
     "@types/yargs": "^15.0.2"
   }
 }

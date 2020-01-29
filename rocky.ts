@@ -1,3 +1,4 @@
+import "core-js/es/object"
 import cdk = require("@aws-cdk/core");
 import lambda = require("@aws-cdk/aws-lambda");
 import { Code } from "@aws-cdk/aws-lambda";
@@ -73,7 +74,7 @@ export class Rocky {
 
   public cdk() {
     const app = new cdk.App();
-    const stack = new cdk.Stack(app, this.name, { tags: { Stack: this.name } });
+    const stack = new cdk.Stack(app, this.name, { tags: { App: this.name } });
     this.cdkResources(stack);
   }
 
@@ -153,19 +154,23 @@ export class Rocky {
 
   }
 
-  private cdkResources(scope: cdk.Construct) {
+  private cdkResources(stack: cdk.Stack) {
     const params = Object.fromEntries(
       Object.entries(this.parameters).map(([name, { description }]) => [
         name,
-        new cdk.CfnParameter(scope, name, { type: "String", description })
+        new cdk.CfnParameter(stack, name, { type: "String", description })
       ])
     );
+    new cdk.Tag("Stage", params.stage.valueAsString)
+    const selectedStack = this.stacks.length > 1 ? (new cdk.CfnParameter(stack, "selectedStack", { type: "string", description: "Which stack is this?", allowedValues: this.stacks })).valueAsString : this.stacks[0]
+    new cdk.Tag("Stack", selectedStack)
+
     const lambdaEnv = Object.fromEntries(
       Object.entries(params).map(([name, param]) => [name, param.valueAsString])
     );
-    const bucket = cdkS3.Bucket.fromBucketName(scope, this.bucket, this.bucket);
+    const bucket = cdkS3.Bucket.fromBucketName(stack, this.bucket, this.bucket);
     this.lambdas.map(l => {
-      const fn = new lambda.Function(scope, `${this.name}-${l.name}`, {
+      const fn = new lambda.Function(stack, `${this.name}-${l.name}`, {
         functionName: `${this.name}-${l.name}-${params.stage.valueAsString}`,
         runtime: lambda.Runtime.NODEJS_10_X,
         memorySize: 512,
@@ -180,12 +185,12 @@ export class Rocky {
       Tag.add(
         fn,
         "App",
-        `${this.name}-${l.name}-${params.stage.valueAsString}`
+        `${this.name}-${l.name}`
       );
       Tag.add(fn, "Stage", params.stage.valueAsString);
-
+      Tag.add(fn, "Stack", selectedStack);
       return fn;
     });
-    return scope;
+    return stack;
   }
 }
