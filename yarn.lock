@@ -203,10 +203,10 @@
   resolved "https://registry.yarnpkg.com/@types/core-js/-/core-js-2.5.2.tgz#d4c25420044d4a5b65e00a82fc04b7824b62691f"
   integrity sha512-+NPqjXgyA02xTHKJDeDca9u8Zr42ts6jhdND4C3PrPeQ35RJa0dmfAedXW7a9K4N1QcBbuWI1nSfGK4r1eVFCQ==
 
-"@types/node@^13.5.0":
-  version "13.5.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.5.0.tgz#4e498dbf355795a611a87ae5ef811a8660d42662"
-  integrity sha512-Onhn+z72D2O2Pb2ql2xukJ55rglumsVo1H6Fmyi8mlU9SvKdBk/pUSUAiBY/d9bAOF7VVWajX3sths/+g6ZiAQ==
+"@types/node@^13.13.30":
+  version "13.13.32"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.13.32.tgz#f0edd0fb57b3c9f6e64a0b3ddb1e0f729b6f71ce"
+  integrity sha512-sPBvDnrwZE1uePhkCEyI/qQlgZM5kePPAhHIFDWNsOrWBFRBOk3LKJYmVCLeLZlL9Ub/FzMJb31OTWCg2F+06g==
 
 "@types/yaml@^1.2.0":
   version "1.2.0"
